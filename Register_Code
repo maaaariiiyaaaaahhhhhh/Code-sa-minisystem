@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace LoginRegister
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void registerbttn_Click(object sender, EventArgs e)
+        {
+
+            string username = txtusername.Text.Trim();
+            string password = txtpassword.Text;
+            string confirmPassword = txtconfirmpass.Text;
+
+            // v-validate niya yung username tas pass
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Please fill in all fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (password != confirmPassword)
+            {
+                MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtpassword.Clear();
+                txtconfirmpass.Clear();
+                return;
+            }
+
+            // Check if already exist na yung username
+            if (STORAGE.RegisteredUsers.ContainsKey(username))
+            {
+                MessageBox.Show("This username is already taken.", "Registration Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Store niya ron sa ginawa kong class
+            STORAGE.RegisteredUsers.Add(username, password);
+            MessageBox.Show($"Registration successful for user: {username}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Navigate to Login Form
+            login loginForm = new login();
+            loginForm.Show();
+            this.Hide();
+        }
+
+        private void Showpass_CheckedChanged(object sender, EventArgs e)
+        {
+
+            txtpassword.UseSystemPasswordChar = !Showpass.Checked;
+            txtconfirmpass.UseSystemPasswordChar = !Showpass.Checked;
+        }
+
+        private void SignUpLbel_Click(object sender, EventArgs e)
+        {
+            login loginForm = new login();
+            loginForm.Show();
+            this.Hide();
+        }
+    }
+    }
+
