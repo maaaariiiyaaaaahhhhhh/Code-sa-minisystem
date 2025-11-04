@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace LoginRegister
+{
+    public partial class login : Form
+    {
+        public login()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string username = txtusernamelogin.Text.Trim();
+            string password = txtpasswordlogin.Text;
+
+            // Check sa class na ginawa ko kung nag eexist na yunng user
+            if (STORAGE.RegisteredUsers.ContainsKey(username))
+            {
+                // Check if the password matches the stored password
+                string storedPassword = STORAGE.RegisteredUsers[username];
+
+                if (storedPassword == password)
+                {
+                    // Login SUCCESS
+                    MessageBox.Show($"Welcome, {username}! Login successful.", "Login Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Close the login window (or open a main application form)
+                    this.Close();
+                }
+                else
+                {
+                    // Password mismatch
+                    MessageBox.Show("Incorrect password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtpasswordlogin.Clear();
+                    txtpasswordlogin.Focus();
+                }
+            }
+            else
+            {
+                // User not found
+                MessageBox.Show("Username not found. Please register an account.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtusernamelogin.Focus();
+            }
+        }
+
+        private void SignInlabel_Click(object sender, EventArgs e)
+        {
+            Form1 registerForm = new Form1(); 
+            registerForm.Show();
+            this.Hide();
+        }
+
+        private void Showpass_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            txtpasswordlogin.UseSystemPasswordChar = !showpasslogin.Checked;
+        }
+    }
+    }
+
