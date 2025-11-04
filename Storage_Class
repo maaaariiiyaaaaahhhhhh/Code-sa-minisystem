@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoginRegister
+{
+    internal class STORAGE
+  
+        {
+            // store ng pass and username
+            public static Dictionary<string, string> RegisteredUsers = new Dictionary<string, string>();
+        }
+    }
+
+
